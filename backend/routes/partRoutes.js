@@ -6,7 +6,10 @@ const {
   createPart,
 } = require("../controllers/partController");
 
-router.get("/", getAllParts);
-router.post("/", createPart);
+const authMiddleware = require("../middleware/authMiddleware");
+
+// PROTECTED ROUTES
+router.get("/", authMiddleware, getAllParts);
+router.post("/", authMiddleware, createPart);
 
 module.exports = router;
