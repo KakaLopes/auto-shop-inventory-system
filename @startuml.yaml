@@ -1,0 +1,33 @@
+@startuml
+class Peca {
+  - id: int
+  - nome: string
+  - categoria: string
+  - quantidade: int
+  + atualizarQuantidade()
+}
+
+class Fornecedor {
+  - id: int
+  - nome: string
+  - contato: string
+}
+
+class Movimentacao {
+  - id: int
+  - data: date
+  - tipo: string
+  - quantidade: int
+  + registrarMovimentacao()
+}
+
+class Usuario {
+  - id: int
+  - nome: string
+  - cargo: string
+}
+
+Peca "1" -- "0..*" Movimentacao : é movimentada em >
+Fornecedor "1" -- "0..*" Peca : fornece >
+Usuario "1" -- "0..*" Movimentacao : registra >
+@enduml
