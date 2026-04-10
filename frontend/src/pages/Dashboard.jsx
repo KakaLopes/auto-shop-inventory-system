@@ -3,6 +3,7 @@ import axios from "axios";
 import Parts from "./Parts";
 import Suppliers from "./Suppliers";
 import LowStock from "./LowStock";
+import CreatePart from "./CreatePart";
 
 function Dashboard({ onLogout }) {
   const [summary, setSummary] = useState(null);
@@ -53,6 +54,15 @@ function Dashboard({ onLogout }) {
   if (currentView === "lowStock") {
     return (
       <LowStock
+        onBack={() => setCurrentView("dashboard")}
+        onLogout={onLogout}
+      />
+    );
+  }
+
+  if (currentView === "createPart") {
+    return (
+      <CreatePart
         onBack={() => setCurrentView("dashboard")}
         onLogout={onLogout}
       />
@@ -115,6 +125,10 @@ function Dashboard({ onLogout }) {
         <button style={styles.button} onClick={() => setCurrentView("lowStock")}>
           View Low Stock 🚨
         </button>
+
+        <button style={styles.button} onClick={() => setCurrentView("createPart")}>
+          Create Part
+        </button>
       </div>
     </div>
   );
@@ -154,6 +168,7 @@ const styles = {
     display: "flex",
     justifyContent: "center",
     gap: "20px",
+    flexWrap: "wrap",
   },
   button: {
     padding: "12px 24px",
