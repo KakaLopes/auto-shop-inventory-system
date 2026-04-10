@@ -8,7 +8,6 @@ function Dashboard({ onLogout }) {
   const [summary, setSummary] = useState(null);
   const [message, setMessage] = useState("");
   const [currentView, setCurrentView] = useState("dashboard");
-const [showLowStock, setShowLowStock] = useState(false);
 
   useEffect(() => {
     const fetchDashboard = async () => {
@@ -32,16 +31,32 @@ const [showLowStock, setShowLowStock] = useState(false);
 
     fetchDashboard();
   }, []);
-  if (showLowStock) {
-  return <LowStock onBack={() => setShowLowStock(false)} onLogout={onLogout} />;
-}
 
   if (currentView === "parts") {
-    return <Parts onBack={() => setCurrentView("dashboard")} onLogout={onLogout} />;
+    return (
+      <Parts
+        onBack={() => setCurrentView("dashboard")}
+        onLogout={onLogout}
+      />
+    );
   }
 
   if (currentView === "suppliers") {
-    return <Suppliers onBack={() => setCurrentView("dashboard")} onLogout={onLogout} />;
+    return (
+      <Suppliers
+        onBack={() => setCurrentView("dashboard")}
+        onLogout={onLogout}
+      />
+    );
+  }
+
+  if (currentView === "lowStock") {
+    return (
+      <LowStock
+        onBack={() => setCurrentView("dashboard")}
+        onLogout={onLogout}
+      />
+    );
   }
 
   if (message) {
@@ -96,6 +111,10 @@ const [showLowStock, setShowLowStock] = useState(false);
         <button style={styles.button} onClick={() => setCurrentView("suppliers")}>
           View Suppliers
         </button>
+
+        <button style={styles.button} onClick={() => setCurrentView("lowStock")}>
+          View Low Stock 🚨
+        </button>
       </div>
     </div>
   );
@@ -142,7 +161,5 @@ const styles = {
     cursor: "pointer",
   },
 };
-<button style={styles.button} onClick={() => setShowLowStock(true)}>
-  View Low Stock 🚨
-</button>
+
 export default Dashboard;

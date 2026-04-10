@@ -11,7 +11,7 @@ function LowStock({ onBack, onLogout }) {
         const token = localStorage.getItem("token");
 
         const response = await axios.get(
-          "http://localhost:5000/api/parts/low-stock",
+          "http://localhost:5000/api/alerts/low-stock",
           {
             headers: {
               Authorization: `Bearer ${token}`,
@@ -50,7 +50,8 @@ function LowStock({ onBack, onLogout }) {
             <th style={styles.th}>Name</th>
             <th style={styles.th}>Code</th>
             <th style={styles.th}>Quantity</th>
-            <th style={styles.th}>Minimum</th>
+            <th style={styles.th}>Minimum Stock</th>
+            <th style={styles.th}>Supplier</th>
           </tr>
         </thead>
         <tbody>
@@ -62,6 +63,7 @@ function LowStock({ onBack, onLogout }) {
                 {item.quantity}
               </td>
               <td style={styles.td}>{item.minimum_stock}</td>
+              <td style={styles.td}>{item.supplier_name || "N/A"}</td>
             </tr>
           ))}
         </tbody>
