@@ -1,9 +1,11 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
+import Parts from "./Parts";
 
 function Dashboard() {
   const [summary, setSummary] = useState(null);
   const [message, setMessage] = useState("");
+  const [showParts, setShowParts] = useState(false);
 
   useEffect(() => {
     const fetchDashboard = async () => {
@@ -27,6 +29,10 @@ function Dashboard() {
 
     fetchDashboard();
   }, []);
+
+  if (showParts) {
+    return <Parts />;
+  }
 
   if (message) {
     return <h2 style={{ textAlign: "center", marginTop: "50px" }}>{message}</h2>;
@@ -66,6 +72,10 @@ function Dashboard() {
           <p>{summary.lowStockItems}</p>
         </div>
       </div>
+
+      <button style={styles.button} onClick={() => setShowParts(true)}>
+        View Parts
+      </button>
     </div>
   );
 }
@@ -88,6 +98,12 @@ const styles = {
     padding: "20px",
     width: "220px",
     boxShadow: "0 2px 8px rgba(0,0,0,0.1)",
+  },
+  button: {
+    marginTop: "30px",
+    padding: "12px 24px",
+    fontSize: "16px",
+    cursor: "pointer",
   },
 };
 
