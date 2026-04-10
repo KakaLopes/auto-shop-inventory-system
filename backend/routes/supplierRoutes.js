@@ -6,7 +6,9 @@ const {
   createSupplier,
 } = require("../controllers/supplierController");
 
-router.get("/", getAllSuppliers);
-router.post("/", createSupplier);
+const authMiddleware = require("../middleware/authMiddleware");
+
+router.get("/", authMiddleware, getAllSuppliers);
+router.post("/", authMiddleware, createSupplier);
 
 module.exports = router;

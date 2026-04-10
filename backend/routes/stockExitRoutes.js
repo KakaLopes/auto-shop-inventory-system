@@ -6,7 +6,8 @@ const {
   createStockExit,
 } = require("../controllers/stockExitController");
 
-router.get("/", getAllStockExits);
-router.post("/", createStockExit);
+const authMiddleware = require("../middleware/authMiddleware");
+router.get("/", authMiddleware, getAllStockExits);
+router.post("/", authMiddleware, createStockExit);
 
 module.exports = router;

@@ -6,7 +6,9 @@ const {
   createStockEntry,
 } = require("../controllers/stockEntryController");
 
-router.get("/", getAllStockEntries);
-router.post("/", createStockEntry);
+const authMiddleware = require("../middleware/authMiddleware");
+
+router.get("/", authMiddleware, getAllStockEntries);
+router.post("/", authMiddleware, createStockEntry);
 
 module.exports = router;
