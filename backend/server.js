@@ -5,6 +5,7 @@ const db = require("./config/db");
 const supplierRoutes = require("./routes/supplierRoutes");
 const partRoutes = require("./routes/partRoutes");
 const stockEntryRoutes = require("./routes/stockEntryRoutes");
+const stockExitRoutes = require("./routes/stockExitRoutes");
 
 dotenv.config();
 
@@ -15,6 +16,7 @@ app.use(express.json());
 app.use("/api/suppliers", supplierRoutes);
 app.use("/api/parts", partRoutes);
 app.use("/api/stock-entries", stockEntryRoutes);
+app.use("/api/stock-exits", stockExitRoutes);
 
 app.get("/", (req, res) => {
   res.send("Auto Shop Inventory System API is running.");
