@@ -6,6 +6,7 @@ function CreateSupplier({ onBack, onLogout }) {
   const [contact, setContact] = useState("");
   const [phone, setPhone] = useState("");
   const [email, setEmail] = useState("");
+  const [address, setAddress] = useState("");
   const [message, setMessage] = useState("");
 
   const handleCreateSupplier = async () => {
@@ -19,6 +20,7 @@ function CreateSupplier({ onBack, onLogout }) {
           contact,
           phone,
           email,
+          address,
         },
         {
           headers: {
@@ -33,6 +35,7 @@ function CreateSupplier({ onBack, onLogout }) {
       setContact("");
       setPhone("");
       setEmail("");
+      setAddress("");
     } catch (error) {
       setMessage("Failed to create supplier ❌");
     }
@@ -82,6 +85,14 @@ function CreateSupplier({ onBack, onLogout }) {
           placeholder="Email"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
+          style={styles.input}
+        />
+
+        <input
+          type="text"
+          placeholder="Address"
+          value={address}
+          onChange={(e) => setAddress(e.target.value)}
           style={styles.input}
         />
 
