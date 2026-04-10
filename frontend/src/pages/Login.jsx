@@ -6,7 +6,7 @@ function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [message, setMessage] = useState("");
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(!!localStorage.getItem("token"));
 
   const handleLogin = async () => {
     try {
@@ -25,8 +25,16 @@ function Login() {
     }
   };
 
+  const handleLogout = () => {
+    localStorage.removeItem("token");
+    setIsLoggedIn(false);
+    setEmail("");
+    setPassword("");
+    setMessage("");
+  };
+
   if (isLoggedIn) {
-    return <Dashboard />;
+    return <Dashboard onLogout={handleLogout} />;
   }
 
   return (
