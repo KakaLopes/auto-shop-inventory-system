@@ -5,6 +5,7 @@ import Suppliers from "./Suppliers";
 import LowStock from "./LowStock";
 import CreatePart from "./CreatePart";
 import CreateSupplier from "./CreateSupplier";
+import CreateStockEntry from "./CreateStockEntry";
 
 function Dashboard({ onLogout }) {
   const [summary, setSummary] = useState(null);
@@ -42,14 +43,7 @@ function Dashboard({ onLogout }) {
       />
     );
   }
-if (currentView === "createSupplier") {
-  return (
-    <CreateSupplier
-      onBack={() => setCurrentView("dashboard")}
-      onLogout={onLogout}
-    />
-  );
-}
+
   if (currentView === "suppliers") {
     return (
       <Suppliers
@@ -71,6 +65,24 @@ if (currentView === "createSupplier") {
   if (currentView === "createPart") {
     return (
       <CreatePart
+        onBack={() => setCurrentView("dashboard")}
+        onLogout={onLogout}
+      />
+    );
+  }
+
+  if (currentView === "createSupplier") {
+    return (
+      <CreateSupplier
+        onBack={() => setCurrentView("dashboard")}
+        onLogout={onLogout}
+      />
+    );
+  }
+
+  if (currentView === "createStockEntry") {
+    return (
+      <CreateStockEntry
         onBack={() => setCurrentView("dashboard")}
         onLogout={onLogout}
       />
@@ -129,15 +141,21 @@ if (currentView === "createSupplier") {
         <button style={styles.button} onClick={() => setCurrentView("suppliers")}>
           View Suppliers
         </button>
-<button style={styles.button} onClick={() => setCurrentView("createSupplier")}>
-  Create Supplier
-</button>
+
         <button style={styles.button} onClick={() => setCurrentView("lowStock")}>
           View Low Stock 🚨
         </button>
 
         <button style={styles.button} onClick={() => setCurrentView("createPart")}>
           Create Part
+        </button>
+
+        <button style={styles.button} onClick={() => setCurrentView("createSupplier")}>
+          Create Supplier
+        </button>
+
+        <button style={styles.button} onClick={() => setCurrentView("createStockEntry")}>
+          Create Stock Entry
         </button>
       </div>
     </div>
