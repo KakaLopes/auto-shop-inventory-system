@@ -4,6 +4,7 @@ import Parts from "./Parts";
 import Suppliers from "./Suppliers";
 import LowStock from "./LowStock";
 import CreatePart from "./CreatePart";
+import CreateSupplier from "./CreateSupplier";
 
 function Dashboard({ onLogout }) {
   const [summary, setSummary] = useState(null);
@@ -41,7 +42,14 @@ function Dashboard({ onLogout }) {
       />
     );
   }
-
+if (currentView === "createSupplier") {
+  return (
+    <CreateSupplier
+      onBack={() => setCurrentView("dashboard")}
+      onLogout={onLogout}
+    />
+  );
+}
   if (currentView === "suppliers") {
     return (
       <Suppliers
@@ -121,7 +129,9 @@ function Dashboard({ onLogout }) {
         <button style={styles.button} onClick={() => setCurrentView("suppliers")}>
           View Suppliers
         </button>
-
+<button style={styles.button} onClick={() => setCurrentView("createSupplier")}>
+  Create Supplier
+</button>
         <button style={styles.button} onClick={() => setCurrentView("lowStock")}>
           View Low Stock 🚨
         </button>
