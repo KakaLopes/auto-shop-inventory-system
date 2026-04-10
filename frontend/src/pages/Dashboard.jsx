@@ -2,11 +2,13 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import Parts from "./Parts";
 import Suppliers from "./Suppliers";
+import LowStock from "./LowStock";
 
 function Dashboard({ onLogout }) {
   const [summary, setSummary] = useState(null);
   const [message, setMessage] = useState("");
   const [currentView, setCurrentView] = useState("dashboard");
+const [showLowStock, setShowLowStock] = useState(false);
 
   useEffect(() => {
     const fetchDashboard = async () => {
@@ -30,6 +32,9 @@ function Dashboard({ onLogout }) {
 
     fetchDashboard();
   }, []);
+  if (showLowStock) {
+  return <LowStock onBack={() => setShowLowStock(false)} onLogout={onLogout} />;
+}
 
   if (currentView === "parts") {
     return <Parts onBack={() => setCurrentView("dashboard")} onLogout={onLogout} />;
@@ -137,5 +142,7 @@ const styles = {
     cursor: "pointer",
   },
 };
-
+<button style={styles.button} onClick={() => setShowLowStock(true)}>
+  View Low Stock 🚨
+</button>
 export default Dashboard;
