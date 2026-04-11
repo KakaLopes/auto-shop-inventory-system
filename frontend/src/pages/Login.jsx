@@ -21,16 +21,13 @@ function Login() {
       setMessage("Login successful ✅");
       setIsLoggedIn(true);
     } catch (error) {
-      setMessage("Login failed ❌");
+      setMessage("Invalid credentials ❌");
     }
   };
 
   const handleLogout = () => {
     localStorage.removeItem("token");
     setIsLoggedIn(false);
-    setEmail("");
-    setPassword("");
-    setMessage("");
   };
 
   if (isLoggedIn) {
@@ -38,54 +35,84 @@ function Login() {
   }
 
   return (
-    <div style={styles.container}>
-      <h1>Auto Shop Inventory Login</h1>
+    <div style={styles.page}>
+      <div style={styles.card}>
+        <h1 style={styles.title}>Auto Shop</h1>
+        <p style={styles.subtitle}>Inventory Management System</p>
 
-      <input
-        type="email"
-        placeholder="Email"
-        value={email}
-        onChange={(e) => setEmail(e.target.value)}
-        style={styles.input}
-      />
+        <input
+          type="email"
+          placeholder="Email"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          style={styles.input}
+        />
 
-      <input
-        type="password"
-        placeholder="Password"
-        value={password}
-        onChange={(e) => setPassword(e.target.value)}
-        style={styles.input}
-      />
+        <input
+          type="password"
+          placeholder="Password"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+          style={styles.input}
+        />
 
-      <button onClick={handleLogin} style={styles.button}>
-        Login
-      </button>
+        <button style={styles.button} onClick={handleLogin}>
+          Login
+        </button>
 
-      <p>{message}</p>
+        {message && <p style={styles.message}>{message}</p>}
+      </div>
     </div>
   );
 }
 
 const styles = {
-  container: {
-    display: "flex",
-    flexDirection: "column",
-    alignItems: "center",
-    justifyContent: "center",
+  page: {
     minHeight: "100vh",
+    backgroundColor: "#f6f8fb",
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+    fontFamily: "Arial, sans-serif",
+  },
+  card: {
+    backgroundColor: "#ffffff",
+    padding: "40px",
+    borderRadius: "16px",
+    boxShadow: "0 8px 24px rgba(0,0,0,0.1)",
+    width: "350px",
+    textAlign: "center",
+  },
+  title: {
+    margin: 0,
+    fontSize: "28px",
+    color: "#1f2937",
+  },
+  subtitle: {
+    marginBottom: "25px",
+    color: "#6b7280",
   },
   input: {
-    width: "280px",
-    padding: "10px",
-    margin: "10px 0",
-    fontSize: "16px",
+    width: "100%",
+    padding: "12px",
+    marginBottom: "12px",
+    borderRadius: "8px",
+    border: "1px solid #ccc",
+    fontSize: "15px",
   },
   button: {
-    width: "280px",
-    padding: "10px",
-    marginTop: "10px",
+    width: "100%",
+    padding: "12px",
+    backgroundColor: "#2563eb",
+    color: "#fff",
+    border: "none",
+    borderRadius: "10px",
     fontSize: "16px",
+    fontWeight: "bold",
     cursor: "pointer",
+  },
+  message: {
+    marginTop: "12px",
   },
 };
 
