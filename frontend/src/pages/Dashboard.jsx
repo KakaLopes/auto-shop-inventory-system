@@ -7,6 +7,7 @@ import CreatePart from "./CreatePart";
 import CreateSupplier from "./CreateSupplier";
 import CreateStockEntry from "./CreateStockEntry";
 import CreateStockExit from "./CreateStockExit";
+import MovementHistory from "./MovementHistory";
 
 function Dashboard({ onLogout }) {
   const [summary, setSummary] = useState(null);
@@ -44,6 +45,15 @@ function Dashboard({ onLogout }) {
       />
     );
   }
+
+  if (currentView === "history") {
+  return (
+    <MovementHistory
+      onBack={() => setCurrentView("dashboard")}
+      onLogout={onLogout}
+    />
+  );
+}
 
   if (currentView === "createStockExit") {
   return (
@@ -162,6 +172,10 @@ function Dashboard({ onLogout }) {
 
         <button style={styles.button} onClick={() => setCurrentView("createPart")}>
           Create Part
+        </button>
+         
+        <button style={styles.button} onClick={() => setCurrentView("history")}>
+          Movement History 📊
         </button>
 
         <button style={styles.button} onClick={() => setCurrentView("createSupplier")}>
