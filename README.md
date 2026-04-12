@@ -1,4 +1,3 @@
-
 # 🔧 Auto Shop Inventory System - Backend
 
 This backend is part of a full-stack inventory management system designed for auto repair shops.
@@ -123,4 +122,3 @@ GET /api/dashboard/summary
 
 Catalina Lopes
 Software Engineering Student
-
