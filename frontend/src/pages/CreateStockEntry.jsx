@@ -4,6 +4,7 @@ import axios from "axios";
 function CreateStockEntry({ onBack, onLogout }) {
   const [partId, setPartId] = useState("");
   const [quantity, setQuantity] = useState("");
+  const [entryDate, setEntryDate] = useState("");
   const [notes, setNotes] = useState("");
   const [parts, setParts] = useState([]);
   const [message, setMessage] = useState("");
@@ -37,6 +38,7 @@ function CreateStockEntry({ onBack, onLogout }) {
         {
           part_id: Number(partId),
           quantity: Number(quantity),
+          entry_date: entryDate ? new Date(entryDate).toISOString() : null,
           notes,
         },
         {
@@ -49,6 +51,7 @@ function CreateStockEntry({ onBack, onLogout }) {
       setMessage("Stock entry created successfully ✅");
       setPartId("");
       setQuantity("");
+      setEntryDate("");
       setNotes("");
     } catch (error) {
       setMessage("Failed to create stock entry ❌");
@@ -101,6 +104,16 @@ function CreateStockEntry({ onBack, onLogout }) {
               placeholder="Enter quantity"
               value={quantity}
               onChange={(e) => setQuantity(e.target.value)}
+              style={styles.input}
+            />
+          </div>
+
+          <div style={styles.field}>
+            <label style={styles.label}>Entry Date</label>
+            <input
+              type="datetime-local"
+              value={entryDate}
+              onChange={(e) => setEntryDate(e.target.value)}
               style={styles.input}
             />
           </div>
