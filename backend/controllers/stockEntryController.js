@@ -29,41 +29,47 @@ const getAllStockEntries = (req, res) => {
 
 // CREATE stock entry and update part quantity
 const createStockEntry = (req, res) => {
-  const { part_id, quantity, notes } = req.body;
+  const { part_id, quantity, notes, entry_date } = req.body;
 
   const insertEntryQuery = `
-    INSERT INTO stock_entries (part_id, quantity, notes)
-    VALUES (?, ?, ?)
+    INSERT INTO stock_entries (part_id, quantity, entry_date, notes)
+    VALUES (?, ?, ?, ?)
   `;
 
-  db.query(insertEntryQuery, [part_id, quantity, notes], (error, result) => {
-    if (error) {
-      return res.status(500).json({
-        message: "Failed to create stock entry",
-        error: error.message,
-      });
-    }
+  const finalEntryDate = entry_date || new Date();
 
-    const updatePartQuery = `
-      UPDATE parts
-      SET quantity = quantity + ?
-      WHERE id = ?
-    `;
-
-    db.query(updatePartQuery, [quantity, part_id], (updateError) => {
-      if (updateError) {
+  db.query(
+    insertEntryQuery,
+    [part_id, quantity, finalEntryDate, notes],
+    (error, result) => {
+      if (error) {
         return res.status(500).json({
-          message: "Stock entry created, but failed to update part quantity",
-          error: updateError.message,
+          message: "Failed to create stock entry",
+          error: error.message,
         });
       }
 
-      res.status(201).json({
-        message: "Stock entry created successfully",
-        entryId: result.insertId,
+      const updatePartQuery = `
+        UPDATE parts
+        SET quantity = quantity + ?
+        WHERE id = ?
+      `;
+
+      db.query(updatePartQuery, [quantity, part_id], (updateError) => {
+        if (updateError) {
+          return res.status(500).json({
+            message: "Stock entry created, but failed to update part quantity",
+            error: updateError.message,
+          });
+        }
+
+        res.status(201).json({
+          message: "Stock entry created successfully",
+          entryId: result.insertId,
+        });
       });
-    });
-  });
+    }
+  );
 };
 
 module.exports = {
