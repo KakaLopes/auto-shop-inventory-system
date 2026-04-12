@@ -1,4 +1,3 @@
-# 🔧 BACKEND README
 
 # 🔧 Auto Shop Inventory System - Backend
 
