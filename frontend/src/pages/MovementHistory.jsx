@@ -12,10 +12,10 @@ function MovementHistory({ onBack, onLogout }) {
         const token = localStorage.getItem("token");
 
         const [entriesRes, exitsRes] = await Promise.all([
-          axios.get("http://localhost:5000/api/stock-entries", {
+          axios.get("https://auto-shop-inventory-system.onrender.com/api/stock-entries", {
             headers: { Authorization: `Bearer ${token}` },
           }),
-          axios.get("http://localhost:5000/api/stock-exits", {
+          axios.get("https://auto-shop-inventory-system.onrender.com/api/stock-exits", {
             headers: { Authorization: `Bearer ${token}` },
           }),
         ]);

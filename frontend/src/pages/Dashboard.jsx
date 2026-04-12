@@ -14,28 +14,38 @@ function Dashboard({ onLogout }) {
   const [message, setMessage] = useState("");
   const [currentView, setCurrentView] = useState("dashboard");
 
-  useEffect(() => {
-    const fetchDashboard = async () => {
+useEffect(() => {
+  const fetchDashboard = async () => {
+    try {
+      let token = null;
+
       try {
-        const token = localStorage.getItem("token");
-
-        const response = await axios.get(
-          "http://localhost:5000/api/dashboard/summary",
-          {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          }
-        );
-
-        setSummary(response.data);
+        token = localStorage.getItem("token");
       } catch (error) {
-        setMessage("Failed to load dashboard data");
+        console.log("localStorage blocked");
       }
-    };
 
-    fetchDashboard();
-  }, []);
+      const response = await axios.get(
+        "https://auto-shop-inventory-system.onrender.com/api/dashboard/summary",
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      setSummary(response.data);
+    } catch (error) {
+      try {
+        localStorage.removeItem("token");
+      } catch (e) {}
+
+      onLogout();
+    }
+  };
+
+  fetchDashboard();
+}, []);
 
   if (currentView === "parts") {
     return <Parts onBack={() => setCurrentView("dashboard")} onLogout={onLogout} />;

@@ -10,7 +10,7 @@ function Parts({ onBack, onLogout }) {
       try {
         const token = localStorage.getItem("token");
 
-        const response = await axios.get("http://localhost:5000/api/parts", {
+        const response = await axios.get("https://auto-shop-inventory-system.onrender.com/api/parts", {
           headers: {
             Authorization: `Bearer ${token}`,
           },

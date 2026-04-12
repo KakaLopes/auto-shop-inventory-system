@@ -6,28 +6,57 @@ function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [message, setMessage] = useState("");
-  const [isLoggedIn, setIsLoggedIn] = useState(!!localStorage.getItem("token"));
+
+  let initialLoggedIn = false;
+
+  try {
+    initialLoggedIn = !!localStorage.getItem("token");
+  } catch (error) {
+    initialLoggedIn = false;
+  }
+
+  const [isLoggedIn, setIsLoggedIn] = useState(initialLoggedIn);
 
   const handleLogin = async () => {
     try {
-      const response = await axios.post("http://localhost:5000/api/auth/login", {
-        email,
-        password,
-      });
+      const response = await axios.post(
+        "https://auto-shop-inventory-system.onrender.com/api/auth/login",
+        {
+          email,
+          password,
+        }
+      );
 
       const token = response.data.token;
-      localStorage.setItem("token", token);
+
+      try {
+        localStorage.setItem("token", token);
+      } catch (error) {
+        console.log("localStorage blocked");
+      }
 
       setMessage("Login successful ✅");
       setIsLoggedIn(true);
     } catch (error) {
       setMessage("Invalid credentials ❌");
+      try {
+        localStorage.removeItem("token");
+      } catch (e) {}
+      setIsLoggedIn(false);
     }
   };
 
   const handleLogout = () => {
-    localStorage.removeItem("token");
+    try {
+      localStorage.removeItem("token");
+    } catch (error) {
+      console.log("localStorage blocked");
+    }
+
     setIsLoggedIn(false);
+    setEmail("");
+    setPassword("");
+    setMessage("");
   };
 
   if (isLoggedIn) {
@@ -99,6 +128,7 @@ const styles = {
     borderRadius: "8px",
     border: "1px solid #ccc",
     fontSize: "15px",
+    boxSizing: "border-box",
   },
   button: {
     width: "100%",

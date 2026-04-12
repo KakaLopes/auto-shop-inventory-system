@@ -14,7 +14,7 @@ function CreateSupplier({ onBack, onLogout }) {
       const token = localStorage.getItem("token");
 
       await axios.post(
-        "http://localhost:5000/api/suppliers",
+        "https://auto-shop-inventory-system.onrender.com/api/suppliers",
         {
           name,
           contact,

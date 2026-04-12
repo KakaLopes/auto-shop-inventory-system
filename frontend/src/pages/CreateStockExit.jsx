@@ -14,7 +14,7 @@ function CreateStockExit({ onBack, onLogout }) {
       try {
         const token = localStorage.getItem("token");
 
-        const response = await axios.get("http://localhost:5000/api/parts", {
+        const response = await axios.get("https://auto-shop-inventory-system.onrender.com/api/parts", {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -34,7 +34,7 @@ function CreateStockExit({ onBack, onLogout }) {
       const token = localStorage.getItem("token");
 
       await axios.post(
-        "http://localhost:5000/api/stock-exits",
+        "https://auto-shop-inventory-system.onrender.com/api/stock-exits",
         {
           part_id: Number(partId),
           quantity: Number(quantity),

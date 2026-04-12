@@ -11,7 +11,7 @@ function LowStock({ onBack, onLogout }) {
         const token = localStorage.getItem("token");
 
         const response = await axios.get(
-          "http://localhost:5000/api/alerts/low-stock",
+          "https://auto-shop-inventory-system.onrender.com/api/alerts/low-stock",
           {
             headers: {
               Authorization: `Bearer ${token}`,
