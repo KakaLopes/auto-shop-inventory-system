@@ -1,131 +1,122 @@
-# 🚗 Auto Shop Inventory System
+# 🔧 BACKEND README
 
-A backend system for managing inventory in automotive workshops.
-This project was developed as part of a Software Engineering assignment.
+# 🔧 Auto Shop Inventory System - Backend
 
----
+This backend is part of a full-stack inventory management system designed for auto repair shops.
 
-## 📌 Features
-
-* Manage suppliers
-* Manage parts and categories
-* Track stock entries (incoming items)
-* Track stock exits (used/sold items)
-* Automatic stock updates
-* Low stock alerts
-* Dashboard summary with key metrics
+It provides secure APIs for managing parts, suppliers, stock movements, and real-time inventory tracking.
 
 ---
 
-## 🛠️ Tech Stack
+## 🚀 Features
+
+* 🔐 Authentication (JWT)
+* 👥 Protected routes
+* 📦 Parts management (CRUD)
+* 🏭 Suppliers management (CRUD)
+* 📥 Stock entry (with date support)
+* 📤 Stock exit (with validation and date support)
+* ⚠️ Low stock alerts
+* 📊 Dashboard summary
+* 📜 Movement history (entries & exits)
+* 🔄 Automatic stock updates
+
+---
+
+## 🛠 Tech Stack
 
 * Node.js
 * Express.js
 * MySQL
-* Nodemon
-* Dotenv
-
----
-
-## 📂 Project Structure
-
-```
-backend/
-│
-├── config/
-├── controllers/
-├── routes/
-├── server.js
-├── .env
-```
+* JWT Authentication
+* dotenv
 
 ---
 
 ## ⚙️ Installation
 
-1. Clone the repository:
-
-```bash
-git clone https://github.com/YOUR-USERNAME/auto-shop-inventory-system.git
-```
-
-2. Install dependencies:
-
-```bash
+git clone <your-repo>
+cd backend
 npm install
-```
 
-3. Create a `.env` file:
+---
 
-```env
+## 🔑 Environment Variables
+
+Create a `.env` file:
+
+PORT=5000
 DB_HOST=localhost
 DB_USER=root
 DB_PASSWORD=
-DB_NAME=auto_shop_inventory
-DB_PORT=3306
-PORT=5000
-```
+DB_NAME=auto_shop
+JWT_SECRET=your_secret_key
 
-4. Run the server:
+---
 
-```bash
+## ▶️ Run the Server
+
 npm run dev
-```
+
+Server will run at:
+http://localhost:5000
 
 ---
 
-## 📡 API Endpoints
+## 🔐 Authentication
 
-### Suppliers
+Login returns a token:
 
-* GET /api/suppliers
-* POST /api/suppliers
-
-### Parts
-
-* GET /api/parts
-* POST /api/parts
-
-### Stock Entries
-
-* GET /api/stock-entries
-* POST /api/stock-entries
-
-### Stock Exits
-
-* GET /api/stock-exits
-* POST /api/stock-exits
-
-### Alerts
-
-* GET /api/alerts/low-stock
-
-### Dashboard
-
-* GET /api/dashboard/summary
-
----
-
-## 📊 Example Dashboard Response
-
-```json
 {
-  "totalParts": 10,
-  "totalSuppliers": 5,
-  "totalStockEntries": 20,
-  "totalStockExits": 15,
-  "lowStockItems": 2
+"token": "your_jwt_token"
 }
-```
+
+Use it in requests:
+
+Authorization: Bearer your_token
 
 ---
 
-## 🚀 Future Improvements
+## 📡 Main Endpoints
 
-* Frontend interface (React)
-* Authentication (JWT)
-* Role-based access (Admin/User)
-* Reports and export (PDF/Excel)
+Auth
+POST /api/auth/login
+POST /api/auth/register
+
+Parts
+GET /api/parts
+POST /api/parts
+
+Suppliers
+GET /api/suppliers
+POST /api/suppliers
+
+Stock
+POST /api/stock-entries
+POST /api/stock-exits
+
+Alerts
+GET /api/alerts/low-stock
+
+Dashboard
+GET /api/dashboard/summary
+
+---
+
+## 🧠 Business Logic
+
+* Stock entries increase quantity
+* Stock exits decrease quantity
+* Prevents negative stock
+* Supports manual or automatic timestamps
+
+---
+
+## 📌 Status
+
+✔️ Fully functional
+✔️ Ready for production improvements
+✔️ Built for academic project (TCC)
 
 ---
 
@@ -133,3 +124,4 @@ npm run dev
 
 Catalina Lopes
 Software Engineering Student
+

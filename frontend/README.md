@@ -1,16 +1,74 @@
-# React + Vite
+🎨 Auto Shop Inventory System - Frontend
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+This is the frontend of a full-stack inventory management system designed for auto repair shops.
 
-Currently, two official plugins are available:
+It provides a clean and modern interface to manage inventory, suppliers, and stock movements.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+🚀 Features
+🔐 Login system (JWT)
+📊 Dashboard overview
+📦 Parts management
+🏭 Suppliers management
+📥 Create stock entry (with date)
+📤 Create stock exit (with validation)
+⚠️ Low stock alerts
+📜 Movement history
+🎯 Clean and responsive UI
+🛠 Tech Stack
+React (Vite)
+Axios
+JavaScript (ES6)
+CSS (inline styling)
+⚙️ Installation
 
-## React Compiler
+git clone
+cd frontend
+npm install
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+▶️ Run the App
 
-## Expanding the ESLint configuration
+npm run dev
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+App runs at:
+http://localhost:5173
+
+🔗 Backend Connection
+
+Make sure the backend is running:
+http://localhost:5000
+
+🔐 Authentication Flow
+User logs in
+Token stored in localStorage
+Requests include:
+
+Authorization: Bearer token
+
+🧩 Main Pages
+Login
+Dashboard
+Parts
+Suppliers
+Low Stock
+Movement History
+Create Part
+Create Supplier
+Create Stock Entry
+Create Stock Exit
+🎨 UI Highlights
+Modern card layout
+Status badges
+Clean tables
+Responsive forms
+Visual alerts
+📌 Status
+
+✔️ Fully functional
+✔️ Integrated with backend
+✔️ Ready for deployment
+✔️ Portfolio-ready project
+
+👩‍💻 Author
+
+Catalina Lopes
+Software Engineering Student
