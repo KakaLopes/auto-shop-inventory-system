@@ -29,7 +29,7 @@ const getAllStockExits = (req, res) => {
 
 // CREATE stock exit and update part quantity
 const createStockExit = (req, res) => {
-  const { part_id, quantity, notes } = req.body;
+  const { part_id, quantity, notes, exit_date } = req.body;
 
   const getPartQuery = "SELECT quantity FROM parts WHERE id = ?";
 
@@ -56,38 +56,44 @@ const createStockExit = (req, res) => {
     }
 
     const insertExitQuery = `
-      INSERT INTO stock_exits (part_id, quantity, notes)
-      VALUES (?, ?, ?)
+      INSERT INTO stock_exits (part_id, quantity, exit_date, notes)
+      VALUES (?, ?, ?, ?)
     `;
 
-    db.query(insertExitQuery, [part_id, quantity, notes], (error, result) => {
-      if (error) {
-        return res.status(500).json({
-          message: "Failed to create stock exit",
-          error: error.message,
-        });
-      }
+    const finalExitDate = exit_date || new Date();
 
-      const updatePartQuery = `
-        UPDATE parts
-        SET quantity = quantity - ?
-        WHERE id = ?
-      `;
-
-      db.query(updatePartQuery, [quantity, part_id], (updateError) => {
-        if (updateError) {
+    db.query(
+      insertExitQuery,
+      [part_id, quantity, finalExitDate, notes],
+      (error, result) => {
+        if (error) {
           return res.status(500).json({
-            message: "Stock exit created, but failed to update part quantity",
-            error: updateError.message,
+            message: "Failed to create stock exit",
+            error: error.message,
           });
         }
 
-        res.status(201).json({
-          message: "Stock exit created successfully",
-          exitId: result.insertId,
+        const updatePartQuery = `
+          UPDATE parts
+          SET quantity = quantity - ?
+          WHERE id = ?
+        `;
+
+        db.query(updatePartQuery, [quantity, part_id], (updateError) => {
+          if (updateError) {
+            return res.status(500).json({
+              message: "Stock exit created, but failed to update part quantity",
+              error: updateError.message,
+            });
+          }
+
+          res.status(201).json({
+            message: "Stock exit created successfully",
+            exitId: result.insertId,
+          });
         });
-      });
-    });
+      }
+    );
   });
 };
 
