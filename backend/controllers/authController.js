@@ -12,7 +12,7 @@ const register = async (req, res) => {
     const hashedPassword = await bcrypt.hash(password, 10);
 
     const query = `
-      INSERT INTO users (name, email, password)
+      INSERT INTO users (full_name, email, password_hash)
       VALUES (?, ?, ?)
     `;
 
@@ -64,13 +64,13 @@ const login = (req, res) => {
     const user = results[0];
     console.log("LOGIN USER:", user);
 
-    if (!password || !user.password) {
+    if (!password || !user.password_hash) {
       return res.status(401).json({
         message: "Invalid email or password",
       });
     }
 
-    const isPasswordValid = await bcrypt.compare(password, user.password);
+    const isPasswordValid = await bcrypt.compare(password, user.password_hash);
 
     if (!isPasswordValid) {
       return res.status(401).json({
@@ -93,7 +93,7 @@ const login = (req, res) => {
       token,
       user: {
         id: user.id,
-        name: user.name,
+        name: user.full_name,
         email: user.email,
         role: user.role,
       },
