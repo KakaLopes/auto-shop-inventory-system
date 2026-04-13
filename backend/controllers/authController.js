@@ -7,6 +7,8 @@ const register = async (req, res) => {
   const { name, email, password } = req.body;
 
   try {
+    console.log("REGISTER BODY:", req.body);
+
     const hashedPassword = await bcrypt.hash(password, 10);
 
     const query = `
@@ -16,6 +18,7 @@ const register = async (req, res) => {
 
     db.query(query, [name, email, hashedPassword], (error, result) => {
       if (error) {
+        console.log("REGISTER DB ERROR:", error);
         return res.status(500).json({
           message: "Failed to register user",
           error: error.message,
@@ -28,6 +31,7 @@ const register = async (req, res) => {
       });
     });
   } catch (err) {
+    console.log("REGISTER SERVER ERROR:", err);
     res.status(500).json({ message: "Server error" });
   }
 };
@@ -36,15 +40,20 @@ const register = async (req, res) => {
 const login = (req, res) => {
   const { email, password } = req.body;
 
+  console.log("LOGIN BODY:", req.body);
+
   const query = "SELECT * FROM users WHERE email = ?";
 
   db.query(query, [email], async (error, results) => {
     if (error) {
+      console.log("LOGIN DB ERROR:", error);
       return res.status(500).json({
         message: "Failed to login",
         error: error.message,
       });
     }
+
+    console.log("LOGIN RESULTS:", results);
 
     if (results.length === 0) {
       return res.status(401).json({
@@ -53,6 +62,7 @@ const login = (req, res) => {
     }
 
     const user = results[0];
+    console.log("LOGIN USER:", user);
 
     if (!password || !user.password) {
       return res.status(401).json({
