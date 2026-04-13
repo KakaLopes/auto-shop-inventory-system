@@ -1,6 +1,7 @@
 const db = require("../config/db");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
+const { randomUUID } = require("crypto");
 
 // REGISTER
 const register = async (req, res) => {
@@ -10,13 +11,14 @@ const register = async (req, res) => {
     console.log("REGISTER BODY:", req.body);
 
     const hashedPassword = await bcrypt.hash(password, 10);
+    const id = randomUUID();
 
     const query = `
-      INSERT INTO users (full_name, email, password_hash)
-      VALUES (?, ?, ?)
+      INSERT INTO users (id, full_name, email, password_hash, role)
+      VALUES (?, ?, ?, ?, ?)
     `;
 
-    db.query(query, [name, email, hashedPassword], (error, result) => {
+    db.query(query, [id, name, email, hashedPassword, "admin"], (error, result) => {
       if (error) {
         console.log("REGISTER DB ERROR:", error);
         return res.status(500).json({
@@ -27,7 +29,7 @@ const register = async (req, res) => {
 
       res.status(201).json({
         message: "User registered successfully",
-        userId: result.insertId,
+        userId: id,
       });
     });
   } catch (err) {
