@@ -44,6 +44,8 @@ const login = (req, res) => {
 
   console.log("LOGIN BODY:", req.body);
 
+  console.log("INSERT DATA:", id, name, email);
+  
   const query = "SELECT * FROM users WHERE email = ?";
 
   db.query(query, [email], async (error, results) => {
