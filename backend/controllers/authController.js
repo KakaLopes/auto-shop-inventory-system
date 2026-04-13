@@ -54,6 +54,12 @@ const login = (req, res) => {
 
     const user = results[0];
 
+    if (!password || !user.password) {
+      return res.status(401).json({
+        message: "Invalid email or password",
+      });
+    }
+
     const isPasswordValid = await bcrypt.compare(password, user.password);
 
     if (!isPasswordValid) {
