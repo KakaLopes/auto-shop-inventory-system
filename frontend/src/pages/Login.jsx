@@ -16,35 +16,25 @@ function Login() {
   }
 
   const [isLoggedIn, setIsLoggedIn] = useState(initialLoggedIn);
+console.log(email, password);
 
-  const handleLogin = async () => {
-    try {
-      const response = await axios.post(
-        "https://auto-shop-inventory-system.onrender.com/api/auth/login",
-        {
-          email,
-          password,
-        }
-      );
-
-      const token = response.data.token;
-
-      try {
-        localStorage.setItem("token", token);
-      } catch (error) {
-        console.log("localStorage blocked");
+const handleLogin = async () => {
+  try {
+    const response = await axios.post(
+      "https://auto-shop-inventory-system.onrender.com/api/auth/login",
+      {
+        email: email,
+        password: password,
       }
+    );
 
-      setMessage("Login successful ✅");
-      setIsLoggedIn(true);
-    } catch (error) {
-      setMessage("Invalid credentials ❌");
-      try {
-        localStorage.removeItem("token");
-      } catch (e) {}
-      setIsLoggedIn(false);
-    }
-  };
+    localStorage.setItem("token", response.data.token);
+
+    setIsLoggedIn(true); // ✅ ISSO É O CERTO
+  } catch (error) {
+    setMessage("Invalid credentials"); // ✅ corrigido
+  }
+};
 
   const handleLogout = () => {
     try {
