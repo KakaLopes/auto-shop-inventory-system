@@ -10,38 +10,58 @@ function Login() {
   let initialLoggedIn = false;
 
   try {
-    initialLoggedIn = !!localStorage.getItem("token");
+    initialLoggedIn = !!window.localStorage.getItem("token");
   } catch (error) {
     initialLoggedIn = false;
   }
 
   const [isLoggedIn, setIsLoggedIn] = useState(initialLoggedIn);
-console.log(email, password);
 
-const handleLogin = async () => {
-  try {
-    const response = await axios.post(
-      "https://auto-shop-inventory-system.onrender.com/api/auth/login",
-      {
-        email: email,
-        password: password,
+  const handleLogin = async () => {
+    try {
+      const response = await axios.post(
+        "https://auto-shop-inventory-system.onrender.com/api/auth/login",
+        {
+          email,
+          password,
+        }
+      );
+
+      console.log("LOGIN RESPONSE:", response.data);
+
+      try {
+        window.localStorage.setItem("token", response.data.token);
+      } catch (storageError) {
+        console.log("localStorage blocked:", storageError);
+
+        try {
+          window.sessionStorage.setItem("token", response.data.token);
+          setMessage("Login successful ✅ (using session storage)");
+          setIsLoggedIn(true);
+          return;
+        } catch (sessionError) {
+          console.log("sessionStorage blocked too:", sessionError);
+          setMessage("Login worked, but browser storage is blocked.");
+          return;
+        }
       }
-    );
 
-    localStorage.setItem("token", response.data.token);
-
-    setIsLoggedIn(true); // ✅ ISSO É O CERTO
-  } catch (error) {
-    setMessage("Invalid credentials"); // ✅ corrigido
-  }
-};
+      setMessage("Login successful ✅");
+      setIsLoggedIn(true);
+    } catch (error) {
+      console.log("LOGIN ERROR:", error.response?.data || error.message);
+      setMessage(error.response?.data?.message || "Invalid credentials ❌");
+    }
+  };
 
   const handleLogout = () => {
     try {
-      localStorage.removeItem("token");
-    } catch (error) {
-      console.log("localStorage blocked");
-    }
+      window.localStorage.removeItem("token");
+    } catch (error) {}
+
+    try {
+      window.sessionStorage.removeItem("token");
+    } catch (error) {}
 
     setIsLoggedIn(false);
     setEmail("");
