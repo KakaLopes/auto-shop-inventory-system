@@ -18,7 +18,7 @@ const register = async (req, res) => {
       VALUES (?, ?, ?, ?, ?)
     `;
 
-    db.query(query, [id, name, email, hashedPassword, "admin"], (error) => {
+    db.query(query, [id, name, email, hashedPassword, "admin"], (error, result) => {
       if (error) {
         console.log("REGISTER DB ERROR:", error);
         return res.status(500).json({
@@ -27,14 +27,17 @@ const register = async (req, res) => {
         });
       }
 
-      res.status(201).json({
+      return res.status(201).json({
         message: "User registered successfully",
         userId: id,
       });
     });
   } catch (err) {
     console.log("REGISTER SERVER ERROR:", err);
-    res.status(500).json({ message: "Server error" });
+    return res.status(500).json({
+      message: "Server error",
+      error: err.message,
+    });
   }
 };
 
