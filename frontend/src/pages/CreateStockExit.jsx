@@ -12,17 +12,28 @@ function CreateStockExit({ onBack, onLogout }) {
   useEffect(() => {
     const fetchParts = async () => {
       try {
-        const token = localStorage.getItem("token");
+        let token = null;
 
-        const response = await axios.get("https://auto-shop-inventory-system.onrender.com/api/parts", {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
+        try {
+          token =
+            window.localStorage.getItem("token") ||
+            window.sessionStorage.getItem("token");
+        } catch (error) {
+          console.log("storage blocked");
+        }
+
+        const response = await axios.get(
+          "https://auto-shop-inventory-system.onrender.com/api/parts",
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
 
         setParts(response.data);
       } catch (error) {
-        setMessage("Failed to load parts");
+        setMessage("Failed to load parts ❌");
       }
     };
 
@@ -30,15 +41,43 @@ function CreateStockExit({ onBack, onLogout }) {
   }, []);
 
   const handleCreateStockExit = async () => {
+    if (!partId) {
+      setMessage("Please select a part ❌");
+      return;
+    }
+
+    if (quantity === "" || Number(quantity) <= 0) {
+      setMessage("Quantity must be greater than 0 ❌");
+      return;
+    }
+
+    if (!exitDate) {
+      setMessage("Exit date is required ❌");
+      return;
+    }
+
+    if (!notes.trim()) {
+      setMessage("Notes are required ❌");
+      return;
+    }
+
     try {
-      const token = localStorage.getItem("token");
+      let token = null;
+
+      try {
+        token =
+          window.localStorage.getItem("token") ||
+          window.sessionStorage.getItem("token");
+      } catch (error) {
+        console.log("storage blocked");
+      }
 
       await axios.post(
         "https://auto-shop-inventory-system.onrender.com/api/stock-exits",
         {
           part_id: Number(partId),
           quantity: Number(quantity),
-          exit_date: exitDate ? new Date(exitDate).toISOString() : null,
+          exit_date: new Date(exitDate).toISOString(),
           notes,
         },
         {
@@ -78,7 +117,16 @@ function CreateStockExit({ onBack, onLogout }) {
       </div>
 
       <div style={styles.formCard}>
-        {message && <p style={styles.message}>{message}</p>}
+        {message && (
+          <p
+            style={{
+              ...styles.message,
+              color: message.includes("❌") ? "#dc2626" : "#059669",
+            }}
+          >
+            {message}
+          </p>
+        )}
 
         <div style={styles.formGrid}>
           <div style={styles.field}>
@@ -201,7 +249,6 @@ const styles = {
   message: {
     marginBottom: "18px",
     fontWeight: "bold",
-    color: "#2563eb",
   },
   formGrid: {
     display: "grid",
