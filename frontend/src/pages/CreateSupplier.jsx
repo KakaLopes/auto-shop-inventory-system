@@ -10,8 +10,41 @@ function CreateSupplier({ onBack, onLogout }) {
   const [message, setMessage] = useState("");
 
   const handleCreateSupplier = async () => {
+    if (!name.trim()) {
+      setMessage("Supplier name is required ❌");
+      return;
+    }
+
+    if (!contact.trim()) {
+      setMessage("Contact person is required ❌");
+      return;
+    }
+
+    if (!phone.trim()) {
+      setMessage("Phone is required ❌");
+      return;
+    }
+
+    if (!email.trim()) {
+      setMessage("Email is required ❌");
+      return;
+    }
+
+    if (!address.trim()) {
+      setMessage("Address is required ❌");
+      return;
+    }
+
     try {
-      const token = localStorage.getItem("token");
+      let token = null;
+
+      try {
+        token =
+          window.localStorage.getItem("token") ||
+          window.sessionStorage.getItem("token");
+      } catch (error) {
+        console.log("storage blocked");
+      }
 
       await axios.post(
         "https://auto-shop-inventory-system.onrender.com/api/suppliers",
@@ -60,7 +93,16 @@ function CreateSupplier({ onBack, onLogout }) {
       </div>
 
       <div style={styles.formCard}>
-        {message && <p style={styles.message}>{message}</p>}
+        {message && (
+          <p
+            style={{
+              ...styles.message,
+              color: message.includes("❌") ? "#dc2626" : "#059669",
+            }}
+          >
+            {message}
+          </p>
+        )}
 
         <div style={styles.formGrid}>
           <div style={styles.field}>
@@ -190,7 +232,6 @@ const styles = {
   message: {
     marginBottom: "18px",
     fontWeight: "bold",
-    color: "#2563eb",
   },
   formGrid: {
     display: "grid",
