@@ -19,11 +19,13 @@ useEffect(() => {
     try {
       let token = null;
 
-      try {
-        token = localStorage.getItem("token");
-      } catch (error) {
-        console.log("localStorage blocked");
-      }
+try {
+  token =
+    window.localStorage.getItem("token") ||
+    window.sessionStorage.getItem("token");
+} catch (error) {
+  console.log("storage blocked");
+}
 
       const response = await axios.get(
         "https://auto-shop-inventory-system.onrender.com/api/dashboard/summary",
