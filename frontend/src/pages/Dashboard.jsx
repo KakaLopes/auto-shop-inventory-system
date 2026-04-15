@@ -14,71 +14,107 @@ function Dashboard({ onLogout }) {
   const [message, setMessage] = useState("");
   const [currentView, setCurrentView] = useState("dashboard");
 
-useEffect(() => {
-  const fetchDashboard = async () => {
-    try {
-      let token = null;
-
-try {
-  token =
-    window.localStorage.getItem("token") ||
-    window.sessionStorage.getItem("token");
-} catch (error) {
-  console.log("storage blocked");
-}
-
-      const response = await axios.get(
-        "https://auto-shop-inventory-system.onrender.com/api/dashboard/summary",
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
-
-      setSummary(response.data);
-    } catch (error) {
+  useEffect(() => {
+    const fetchDashboard = async () => {
       try {
-        localStorage.removeItem("token");
-      } catch (e) {}
+        let token = null;
 
-      onLogout();
-    }
-  };
+        try {
+          token =
+            window.localStorage.getItem("token") ||
+            window.sessionStorage.getItem("token");
+        } catch (error) {
+          console.log("storage blocked");
+        }
 
-  fetchDashboard();
-}, []);
+        const response = await axios.get(
+          "https://auto-shop-inventory-system.onrender.com/api/dashboard/summary",
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+
+        setSummary(response.data);
+      } catch (error) {
+        setMessage("Failed to load dashboard data");
+      }
+    };
+
+    fetchDashboard();
+  }, []);
 
   if (currentView === "parts") {
-    return <Parts onBack={() => setCurrentView("dashboard")} onLogout={onLogout} />;
+    return (
+      <Parts
+        onBack={() => setCurrentView("dashboard")}
+        onLogout={onLogout}
+      />
+    );
   }
 
   if (currentView === "suppliers") {
-    return <Suppliers onBack={() => setCurrentView("dashboard")} onLogout={onLogout} />;
+    return (
+      <Suppliers
+        onBack={() => setCurrentView("dashboard")}
+        onLogout={onLogout}
+      />
+    );
   }
 
   if (currentView === "lowStock") {
-    return <LowStock onBack={() => setCurrentView("dashboard")} onLogout={onLogout} />;
+    return (
+      <LowStock
+        onBack={() => setCurrentView("dashboard")}
+        onLogout={onLogout}
+      />
+    );
+  }
+
+  if (currentView === "movementHistory") {
+    return (
+      <MovementHistory
+        onBack={() => setCurrentView("dashboard")}
+        onLogout={onLogout}
+      />
+    );
   }
 
   if (currentView === "createPart") {
-    return <CreatePart onBack={() => setCurrentView("dashboard")} onLogout={onLogout} />;
+    return (
+      <CreatePart
+        onBack={() => setCurrentView("dashboard")}
+        onLogout={onLogout}
+      />
+    );
   }
 
   if (currentView === "createSupplier") {
-    return <CreateSupplier onBack={() => setCurrentView("dashboard")} onLogout={onLogout} />;
+    return (
+      <CreateSupplier
+        onBack={() => setCurrentView("dashboard")}
+        onLogout={onLogout}
+      />
+    );
   }
 
   if (currentView === "createStockEntry") {
-    return <CreateStockEntry onBack={() => setCurrentView("dashboard")} onLogout={onLogout} />;
+    return (
+      <CreateStockEntry
+        onBack={() => setCurrentView("dashboard")}
+        onLogout={onLogout}
+      />
+    );
   }
 
   if (currentView === "createStockExit") {
-    return <CreateStockExit onBack={() => setCurrentView("dashboard")} onLogout={onLogout} />;
-  }
-
-  if (currentView === "history") {
-    return <MovementHistory onBack={() => setCurrentView("dashboard")} onLogout={onLogout} />;
+    return (
+      <CreateStockExit
+        onBack={() => setCurrentView("dashboard")}
+        onLogout={onLogout}
+      />
+    );
   }
 
   if (message) {
@@ -102,49 +138,75 @@ try {
         </button>
       </div>
 
-      <div style={styles.cardGrid}>
-        <div style={styles.card}>
-          <p style={styles.cardLabel}>Total Parts</p>
-          <h2 style={styles.cardValue}>{summary.totalParts}</h2>
+      <div style={styles.cardContainer}>
+        <div
+          style={styles.card}
+          onClick={() => setCurrentView("parts")}
+          onMouseEnter={(e) => (e.currentTarget.style.transform = "translateY(-4px)")}
+          onMouseLeave={(e) => (e.currentTarget.style.transform = "translateY(0)")}
+        >
+          <h3 style={styles.cardTitle}>Total Parts</h3>
+          <p style={styles.cardValue}>{summary.totalParts}</p>
         </div>
 
-        <div style={styles.card}>
-          <p style={styles.cardLabel}>Total Suppliers</p>
-          <h2 style={styles.cardValue}>{summary.totalSuppliers}</h2>
+        <div
+          style={styles.card}
+          onClick={() => setCurrentView("suppliers")}
+          onMouseEnter={(e) => (e.currentTarget.style.transform = "translateY(-4px)")}
+          onMouseLeave={(e) => (e.currentTarget.style.transform = "translateY(0)")}
+        >
+          <h3 style={styles.cardTitle}>Total Suppliers</h3>
+          <p style={styles.cardValue}>{summary.totalSuppliers}</p>
         </div>
 
-        <div style={styles.card}>
-          <p style={styles.cardLabel}>Stock Entries</p>
-          <h2 style={styles.cardValue}>{summary.totalStockEntries}</h2>
+        <div
+          style={styles.card}
+          onClick={() => setCurrentView("movementHistory")}
+          onMouseEnter={(e) => (e.currentTarget.style.transform = "translateY(-4px)")}
+          onMouseLeave={(e) => (e.currentTarget.style.transform = "translateY(0)")}
+        >
+          <h3 style={styles.cardTitle}>Stock Entries</h3>
+          <p style={styles.cardValue}>{summary.totalStockEntries}</p>
         </div>
 
-        <div style={styles.card}>
-          <p style={styles.cardLabel}>Stock Exits</p>
-          <h2 style={styles.cardValue}>{summary.totalStockExits}</h2>
+        <div
+          style={styles.card}
+          onClick={() => setCurrentView("movementHistory")}
+          onMouseEnter={(e) => (e.currentTarget.style.transform = "translateY(-4px)")}
+          onMouseLeave={(e) => (e.currentTarget.style.transform = "translateY(0)")}
+        >
+          <h3 style={styles.cardTitle}>Stock Exits</h3>
+          <p style={styles.cardValue}>{summary.totalStockExits}</p>
         </div>
 
-        <div style={styles.alertCard}>
-          <p style={styles.cardLabel}>Low Stock Items</p>
-          <h2 style={styles.alertValue}>{summary.lowStockItems}</h2>
+        <div
+          style={styles.alertCard}
+          onClick={() => setCurrentView("lowStock")}
+          onMouseEnter={(e) => (e.currentTarget.style.transform = "translateY(-4px)")}
+          onMouseLeave={(e) => (e.currentTarget.style.transform = "translateY(0)")}
+        >
+          <h3 style={styles.cardTitle}>Low Stock Items</h3>
+          <p style={styles.alertValue}>{summary.lowStockItems}</p>
         </div>
       </div>
 
       <div style={styles.section}>
         <h2 style={styles.sectionTitle}>View Data</h2>
+
         <div style={styles.buttonGrid}>
-          <button style={styles.primaryButton} onClick={() => setCurrentView("parts")}>
+          <button style={styles.blueButton} onClick={() => setCurrentView("parts")}>
             View Parts
           </button>
 
-          <button style={styles.primaryButton} onClick={() => setCurrentView("suppliers")}>
+          <button style={styles.blueButton} onClick={() => setCurrentView("suppliers")}>
             View Suppliers
           </button>
 
-          <button style={styles.warningButton} onClick={() => setCurrentView("lowStock")}>
+          <button style={styles.orangeButton} onClick={() => setCurrentView("lowStock")}>
             View Low Stock
           </button>
 
-          <button style={styles.primaryButton} onClick={() => setCurrentView("history")}>
+          <button style={styles.blueButton} onClick={() => setCurrentView("movementHistory")}>
             Movement History
           </button>
         </div>
@@ -152,20 +214,21 @@ try {
 
       <div style={styles.section}>
         <h2 style={styles.sectionTitle}>Quick Actions</h2>
+
         <div style={styles.buttonGrid}>
-          <button style={styles.successButton} onClick={() => setCurrentView("createPart")}>
+          <button style={styles.greenButton} onClick={() => setCurrentView("createPart")}>
             Create Part
           </button>
 
-          <button style={styles.successButton} onClick={() => setCurrentView("createSupplier")}>
+          <button style={styles.greenButton} onClick={() => setCurrentView("createSupplier")}>
             Create Supplier
           </button>
 
-          <button style={styles.successButton} onClick={() => setCurrentView("createStockEntry")}>
+          <button style={styles.greenButton} onClick={() => setCurrentView("createStockEntry")}>
             Create Stock Entry
           </button>
 
-          <button style={styles.dangerButton} onClick={() => setCurrentView("createStockExit")}>
+          <button style={styles.redButton} onClick={() => setCurrentView("createStockExit")}>
             Create Stock Exit
           </button>
         </div>
@@ -177,41 +240,45 @@ try {
 const styles = {
   page: {
     minHeight: "100vh",
-    backgroundColor: "#f6f8fb",
-    padding: "40px",
+    backgroundColor: "#f4f6f8",
+    padding: "30px",
     fontFamily: "Arial, sans-serif",
   },
   header: {
     backgroundColor: "#ffffff",
-    borderRadius: "16px",
-    padding: "24px 28px",
+    borderRadius: "20px",
+    padding: "28px 32px",
     display: "flex",
     justifyContent: "space-between",
     alignItems: "center",
-    boxShadow: "0 4px 14px rgba(0,0,0,0.08)",
+    boxShadow: "0 8px 24px rgba(0,0,0,0.08)",
     marginBottom: "30px",
+    gap: "20px",
+    flexWrap: "wrap",
   },
   title: {
     margin: 0,
-    fontSize: "32px",
+    fontSize: "42px",
+    lineHeight: "1",
     color: "#1f2937",
   },
   subtitle: {
-    margin: "8px 0 0 0",
+    margin: "10px 0 0 0",
     color: "#6b7280",
-    fontSize: "15px",
+    fontSize: "16px",
   },
   logoutButton: {
-    backgroundColor: "#111827",
+    backgroundColor: "#0f172a",
     color: "#ffffff",
     border: "none",
-    borderRadius: "10px",
-    padding: "12px 20px",
-    cursor: "pointer",
-    fontSize: "15px",
+    borderRadius: "16px",
+    padding: "16px 28px",
+    fontSize: "18px",
     fontWeight: "bold",
+    cursor: "pointer",
+    minWidth: "140px",
   },
-  cardGrid: {
+  cardContainer: {
     display: "grid",
     gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))",
     gap: "20px",
@@ -219,87 +286,96 @@ const styles = {
   },
   card: {
     backgroundColor: "#ffffff",
-    borderRadius: "16px",
-    padding: "24px",
-    boxShadow: "0 4px 14px rgba(0,0,0,0.08)",
+    borderRadius: "20px",
+    padding: "28px",
+    boxShadow: "0 8px 20px rgba(0,0,0,0.06)",
+    textAlign: "center",
+    cursor: "pointer",
+    transition: "all 0.2s ease",
   },
   alertCard: {
-    backgroundColor: "#fff4f4",
-    borderRadius: "16px",
-    padding: "24px",
-    boxShadow: "0 4px 14px rgba(0,0,0,0.08)",
-    border: "1px solid #fecaca",
+    backgroundColor: "#fff7f7",
+    border: "1px solid #f2caca",
+    borderRadius: "20px",
+    padding: "28px",
+    boxShadow: "0 8px 20px rgba(0,0,0,0.06)",
+    textAlign: "center",
+    cursor: "pointer",
+    transition: "all 0.2s ease",
   },
-  cardLabel: {
+  cardTitle: {
     margin: 0,
-    fontSize: "14px",
+    fontSize: "16px",
     color: "#6b7280",
+    fontWeight: "normal",
   },
   cardValue: {
-    margin: "12px 0 0 0",
-    fontSize: "34px",
+    margin: "24px 0 0 0",
+    fontSize: "64px",
     color: "#111827",
+    fontWeight: "500",
   },
   alertValue: {
-    margin: "12px 0 0 0",
-    fontSize: "34px",
-    color: "#dc2626",
+    margin: "24px 0 0 0",
+    fontSize: "64px",
+    color: "#cf3b2f",
+    fontWeight: "500",
   },
   section: {
     backgroundColor: "#ffffff",
-    borderRadius: "16px",
-    padding: "24px",
-    boxShadow: "0 4px 14px rgba(0,0,0,0.08)",
-    marginBottom: "24px",
+    borderRadius: "20px",
+    padding: "30px",
+    boxShadow: "0 8px 24px rgba(0,0,0,0.06)",
+    marginBottom: "30px",
   },
   sectionTitle: {
-    marginTop: 0,
-    marginBottom: "20px",
-    fontSize: "22px",
+    margin: "0 0 24px 0",
+    fontSize: "28px",
+    textAlign: "center",
     color: "#1f2937",
   },
   buttonGrid: {
     display: "grid",
-    gridTemplateColumns: "repeat(auto-fit, minmax(180px, 1fr))",
-    gap: "16px",
+    gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))",
+    gap: "18px",
   },
-  primaryButton: {
-    backgroundColor: "#2563eb",
+  blueButton: {
+    backgroundColor: "#4365dd",
     color: "#ffffff",
     border: "none",
-    borderRadius: "12px",
-    padding: "14px 18px",
-    fontSize: "15px",
+    borderRadius: "18px",
+    padding: "22px",
+    fontSize: "20px",
     fontWeight: "bold",
     cursor: "pointer",
   },
-  successButton: {
-    backgroundColor: "#059669",
+  orangeButton: {
+    backgroundColor: "#cf7f2e",
     color: "#ffffff",
     border: "none",
-    borderRadius: "12px",
-    padding: "14px 18px",
-    fontSize: "15px",
+    borderRadius: "18px",
+    padding: "22px",
+    fontSize: "20px",
     fontWeight: "bold",
     cursor: "pointer",
   },
-  warningButton: {
-    backgroundColor: "#d97706",
+  greenButton: {
+    backgroundColor: "#4b9b6b",
     color: "#ffffff",
     border: "none",
-    borderRadius: "12px",
-    padding: "14px 18px",
-    fontSize: "15px",
+    borderRadius: "18px",
+    padding: "22px",
+    fontSize: "20px",
     fontWeight: "bold",
     cursor: "pointer",
   },
-  dangerButton: {
-    backgroundColor: "#dc2626",
+  redButton: {
+    backgroundColor: "#cf3b2f",
     color: "#ffffff",
     border: "none",
-    borderRadius: "12px",
-    padding: "14px 18px",
-    fontSize: "15px",
+    borderRadius: "18px",
+    padding: "22px",
+    fontSize: "20px",
     fontWeight: "bold",
     cursor: "pointer",
   },
