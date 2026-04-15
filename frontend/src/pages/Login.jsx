@@ -1,23 +1,30 @@
 import { useState } from "react";
 import axios from "axios";
 import Dashboard from "./Dashboard";
+import {
+  getStoredToken,
+  clearStoredToken,
+  saveToken,
+  isAuthenticated,
+} from "../utils/auth";
 
 function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [message, setMessage] = useState("");
-
-  let initialLoggedIn = false;
-
-  try {
-    initialLoggedIn = !!window.localStorage.getItem("token");
-  } catch (error) {
-    initialLoggedIn = false;
-  }
-
-  const [isLoggedIn, setIsLoggedIn] = useState(initialLoggedIn);
+  const [isLoggedIn, setIsLoggedIn] = useState(isAuthenticated());
 
   const handleLogin = async () => {
+    if (!email.trim()) {
+      setMessage("Email is required ❌");
+      return;
+    }
+
+    if (!password.trim()) {
+      setMessage("Password is required ❌");
+      return;
+    }
+
     try {
       const response = await axios.post(
         "https://auto-shop-inventory-system.onrender.com/api/auth/login",
@@ -27,49 +34,29 @@ function Login() {
         }
       );
 
-      console.log("LOGIN RESPONSE:", response.data);
+      const storageUsed = saveToken(response.data.token);
 
-      try {
-        window.localStorage.setItem("token", response.data.token);
-      } catch (storageError) {
-        console.log("localStorage blocked:", storageError);
-
-        try {
-          window.sessionStorage.setItem("token", response.data.token);
-          setMessage("Login successful ✅ (using session storage)");
-          setIsLoggedIn(true);
-          return;
-        } catch (sessionError) {
-          console.log("sessionStorage blocked too:", sessionError);
-          setMessage("Login worked, but browser storage is blocked.");
-          return;
-        }
+      if (!storageUsed) {
+        setMessage("Login worked, but browser storage is blocked ❌");
+        return;
       }
 
       setMessage("Login successful ✅");
       setIsLoggedIn(true);
     } catch (error) {
-      console.log("LOGIN ERROR:", error.response?.data || error.message);
       setMessage(error.response?.data?.message || "Invalid credentials ❌");
     }
   };
 
   const handleLogout = () => {
-    try {
-      window.localStorage.removeItem("token");
-    } catch (error) {}
-
-    try {
-      window.sessionStorage.removeItem("token");
-    } catch (error) {}
-
+    clearStoredToken();
     setIsLoggedIn(false);
     setEmail("");
     setPassword("");
     setMessage("");
   };
 
-  if (isLoggedIn) {
+  if (isLoggedIn && getStoredToken()) {
     return <Dashboard onLogout={handleLogout} />;
   }
 
@@ -99,7 +86,16 @@ function Login() {
           Login
         </button>
 
-        {message && <p style={styles.message}>{message}</p>}
+        {message && (
+          <p
+            style={{
+              ...styles.message,
+              color: message.includes("❌") ? "#dc2626" : "#059669",
+            }}
+          >
+            {message}
+          </p>
+        )}
       </div>
     </div>
   );
@@ -153,6 +149,7 @@ const styles = {
   },
   message: {
     marginTop: "12px",
+    fontWeight: "bold",
   },
 };
 

@@ -8,42 +8,47 @@ import CreateSupplier from "./CreateSupplier";
 import CreateStockEntry from "./CreateStockEntry";
 import CreateStockExit from "./CreateStockExit";
 import MovementHistory from "./MovementHistory";
+import { getStoredToken, clearStoredToken } from "../utils/auth";
 
 function Dashboard({ onLogout }) {
   const [summary, setSummary] = useState(null);
   const [message, setMessage] = useState("");
   const [currentView, setCurrentView] = useState("dashboard");
 
-  useEffect(() => {
-    const fetchDashboard = async () => {
-      try {
-        let token = null;
+useEffect(() => {
+  const fetchDashboard = async () => {
+    const token = getStoredToken();
 
-        try {
-          token =
-            window.localStorage.getItem("token") ||
-            window.sessionStorage.getItem("token");
-        } catch (error) {
-          console.log("storage blocked");
+    if (!token) {
+      clearStoredToken();
+      onLogout();
+      return;
+    }
+
+    try {
+      const response = await axios.get(
+        "https://auto-shop-inventory-system.onrender.com/api/dashboard/summary",
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
         }
+      );
 
-        const response = await axios.get(
-          "https://auto-shop-inventory-system.onrender.com/api/dashboard/summary",
-          {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          }
-        );
-
-        setSummary(response.data);
-      } catch (error) {
-        setMessage("Failed to load dashboard data");
+      setSummary(response.data);
+    } catch (error) {
+      if (error.response?.status === 401) {
+        clearStoredToken();
+        onLogout();
+        return;
       }
-    };
 
-    fetchDashboard();
-  }, []);
+      setMessage("Failed to load dashboard data ❌");
+    }
+  };
+
+  fetchDashboard();
+}, [onLogout]);
 
   if (currentView === "parts") {
     return (
