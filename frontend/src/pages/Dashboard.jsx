@@ -14,120 +14,115 @@ function Dashboard({ onLogout }) {
   const [summary, setSummary] = useState(null);
   const [message, setMessage] = useState("");
   const [currentView, setCurrentView] = useState("dashboard");
+  const [loading, setLoading] = useState(true);
 
-useEffect(() => {
-  const fetchDashboard = async () => {
-    const token = getStoredToken();
+  useEffect(() => {
+    const fetchDashboard = async () => {
+      const token = getStoredToken();
 
-    if (!token) {
-      clearStoredToken();
-      onLogout();
-      return;
-    }
-
-    try {
-      const response = await axios.get(
-        "https://auto-shop-inventory-system.onrender.com/api/dashboard/summary",
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
-
-      setSummary(response.data);
-    } catch (error) {
-      if (error.response?.status === 401) {
+      if (!token) {
         clearStoredToken();
         onLogout();
         return;
       }
 
-      setMessage("Failed to load dashboard data ❌");
-    }
-  };
+      try {
+        setLoading(true);
+        setMessage("");
 
-  fetchDashboard();
-}, [onLogout]);
+        const response = await axios.get(
+          "https://auto-shop-inventory-system.onrender.com/api/dashboard/summary",
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+
+        setSummary(response.data);
+      } catch (error) {
+        if (error.response?.status === 401) {
+          clearStoredToken();
+          onLogout();
+          return;
+        }
+
+        setMessage("Failed to load dashboard data ❌");
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchDashboard();
+  }, [onLogout]);
 
   if (currentView === "parts") {
-    return (
-      <Parts
-        onBack={() => setCurrentView("dashboard")}
-        onLogout={onLogout}
-      />
-    );
+    return <Parts onBack={() => setCurrentView("dashboard")} onLogout={onLogout} />;
   }
 
   if (currentView === "suppliers") {
-    return (
-      <Suppliers
-        onBack={() => setCurrentView("dashboard")}
-        onLogout={onLogout}
-      />
-    );
+    return <Suppliers onBack={() => setCurrentView("dashboard")} onLogout={onLogout} />;
   }
 
   if (currentView === "lowStock") {
-    return (
-      <LowStock
-        onBack={() => setCurrentView("dashboard")}
-        onLogout={onLogout}
-      />
-    );
+    return <LowStock onBack={() => setCurrentView("dashboard")} onLogout={onLogout} />;
   }
 
   if (currentView === "movementHistory") {
-    return (
-      <MovementHistory
-        onBack={() => setCurrentView("dashboard")}
-        onLogout={onLogout}
-      />
-    );
+    return <MovementHistory onBack={() => setCurrentView("dashboard")} onLogout={onLogout} />;
   }
 
   if (currentView === "createPart") {
-    return (
-      <CreatePart
-        onBack={() => setCurrentView("dashboard")}
-        onLogout={onLogout}
-      />
-    );
+    return <CreatePart onBack={() => setCurrentView("dashboard")} onLogout={onLogout} />;
   }
 
   if (currentView === "createSupplier") {
-    return (
-      <CreateSupplier
-        onBack={() => setCurrentView("dashboard")}
-        onLogout={onLogout}
-      />
-    );
+    return <CreateSupplier onBack={() => setCurrentView("dashboard")} onLogout={onLogout} />;
   }
 
   if (currentView === "createStockEntry") {
-    return (
-      <CreateStockEntry
-        onBack={() => setCurrentView("dashboard")}
-        onLogout={onLogout}
-      />
-    );
+    return <CreateStockEntry onBack={() => setCurrentView("dashboard")} onLogout={onLogout} />;
   }
 
   if (currentView === "createStockExit") {
+    return <CreateStockExit onBack={() => setCurrentView("dashboard")} onLogout={onLogout} />;
+  }
+
+  if (loading) {
     return (
-      <CreateStockExit
-        onBack={() => setCurrentView("dashboard")}
-        onLogout={onLogout}
-      />
+      <div style={styles.statePage}>
+        <div style={styles.stateCard}>
+          <div style={styles.spinner}></div>
+          <h2 style={styles.stateTitle}>Loading dashboard...</h2>
+          <p style={styles.stateText}>Please wait while we fetch your inventory summary.</p>
+        </div>
+      </div>
     );
   }
 
   if (message) {
-    return <h2 style={{ textAlign: "center", marginTop: "50px" }}>{message}</h2>;
+    return (
+      <div style={styles.statePage}>
+        <div style={styles.stateCard}>
+          <h2 style={styles.errorTitle}>Something went wrong</h2>
+          <p style={styles.errorText}>{message}</p>
+          <button style={styles.retryButton} onClick={() => window.location.reload()}>
+            Try Again
+          </button>
+        </div>
+      </div>
+    );
   }
 
   if (!summary) {
-    return <h2 style={{ textAlign: "center", marginTop: "50px" }}>Loading dashboard...</h2>;
+    return (
+      <div style={styles.statePage}>
+        <div style={styles.stateCard}>
+          <h2 style={styles.errorTitle}>No data available</h2>
+          <p style={styles.errorText}>Dashboard data could not be displayed.</p>
+        </div>
+      </div>
+    );
   }
 
   return (
@@ -248,6 +243,63 @@ const styles = {
     backgroundColor: "#f4f6f8",
     padding: "30px",
     fontFamily: "Arial, sans-serif",
+  },
+  statePage: {
+    minHeight: "100vh",
+    backgroundColor: "#f4f6f8",
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+    padding: "24px",
+    fontFamily: "Arial, sans-serif",
+  },
+  stateCard: {
+    backgroundColor: "#ffffff",
+    borderRadius: "20px",
+    padding: "40px 32px",
+    boxShadow: "0 8px 24px rgba(0,0,0,0.08)",
+    textAlign: "center",
+    maxWidth: "420px",
+    width: "100%",
+  },
+  spinner: {
+    width: "50px",
+    height: "50px",
+    margin: "0 auto 20px auto",
+    border: "5px solid #dbeafe",
+    borderTop: "5px solid #2563eb",
+    borderRadius: "50%",
+    animation: "spin 1s linear infinite",
+  },
+  stateTitle: {
+    margin: "0 0 10px 0",
+    fontSize: "28px",
+    color: "#1f2937",
+  },
+  stateText: {
+    margin: 0,
+    color: "#6b7280",
+    fontSize: "15px",
+  },
+  errorTitle: {
+    margin: "0 0 12px 0",
+    fontSize: "28px",
+    color: "#dc2626",
+  },
+  errorText: {
+    margin: "0 0 20px 0",
+    color: "#6b7280",
+    fontSize: "15px",
+  },
+  retryButton: {
+    backgroundColor: "#2563eb",
+    color: "#ffffff",
+    border: "none",
+    borderRadius: "12px",
+    padding: "14px 22px",
+    fontSize: "15px",
+    fontWeight: "bold",
+    cursor: "pointer",
   },
   header: {
     backgroundColor: "#ffffff",
