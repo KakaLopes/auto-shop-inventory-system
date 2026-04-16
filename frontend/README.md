@@ -1,103 +1,110 @@
-# 🎨 Auto Shop Inventory System - Frontend
+# 🎨 Auto Shop Inventory Management System - Frontend
 
-This is the frontend of a full-stack inventory management system designed for auto repair shops.
+This is the frontend of the Auto Shop Inventory Management System, a full-stack web application developed to manage inventory for auto shops and small businesses.
 
-It provides a clean and modern interface to manage inventory, suppliers, and stock movements.
-
----
-
-## 🚀 Features
-
-* 🔐 Login system (JWT)
-* 📊 Dashboard overview
-* 📦 Parts management
-* 🏭 Suppliers management
-* 📥 Create stock entry (with date)
-* 📤 Create stock exit (with validation)
-* ⚠️ Low stock alerts
-* 📜 Movement history
-* 🎯 Clean and responsive UI
+It provides a modern and responsive user interface for managing parts, suppliers, stock entries, stock exits, and low stock alerts.
 
 ---
 
-## 🛠 Tech Stack
+## 🚀 Live Demo
 
-* React (Vite)
-* Axios
-* JavaScript (ES6)
-* CSS (inline styling)
+Frontend:
+👉 https://auto-shop-inventory-system.vercel.app
+
+Backend API:
+👉 https://auto-shop-inventory-system.onrender.com
 
 ---
 
-## ⚙️ Installation
+## 📌 Features
 
-git clone <your-repo>
+- 🔐 Login authentication
+- 📊 Interactive dashboard
+- 📦 View parts
+- 🏢 View suppliers
+- 📥 Create stock entries
+- 📤 Create stock exits
+- ⚠️ Low stock alerts
+- 📜 Movement history
+- ✅ Form validation
+- 🔄 Loading and error handling
+- 🔒 Protected access with token
+
+---
+
+## 🛠️ Technologies Used
+
+- React.js
+- Axios
+- JavaScript
+- CSS (custom styling)
+- Vercel (deployment)
+
+---
+
+## 📂 Main Pages
+
+- Login
+- Dashboard
+- Parts
+- Suppliers
+- Low Stock
+- Movement History
+- Create Part
+- Create Supplier
+- Create Stock Entry
+- Create Stock Exit
+
+---
+
+## ⚙️ How to Run Locally
+
+### 1. Go to the frontend folder
+
+```bash
 cd frontend
+```
+
+### 2. Install dependencies
+
+```bash
 npm install
+```
 
----
+### 3. Run the project
 
-## ▶️ Run the App
-
+```bash
 npm run dev
-
-App runs at:
-http://localhost:5173
+```
 
 ---
 
-## 🔗 Backend Connection
+## 🔐 Authentication
 
-Make sure the backend is running:
-http://localhost:5000
+The frontend uses token-based authentication.
 
----
-
-## 🔐 Authentication Flow
-
-1. User logs in
-2. Token stored in localStorage
-3. Requests include:
-
-Authorization: Bearer token
+- Token is stored in browser storage
+- Protected pages require a valid token
+- Invalid or expired token redirects the user back to login
 
 ---
 
-## 🧩 Main Pages
+## 📱 Responsiveness
 
-* Login
-* Dashboard
-* Parts
-* Suppliers
-* Low Stock
-* Movement History
-* Create Part
-* Create Supplier
-* Create Stock Entry
-* Create Stock Exit
+The interface is responsive and works on:
+
+- Desktop 💻
+- Tablet 📱
+- Mobile 📱
 
 ---
 
-## 🎨 UI Highlights
+## 🎯 Purpose
 
-* Modern card layout
-* Status badges
-* Clean tables
-* Responsive forms
-* Visual alerts
-
----
-
-## 📌 Status
-
-✔️ Fully functional
-✔️ Integrated with backend
-✔️ Ready for deployment
-✔️ Portfolio-ready project
+This frontend was developed to provide a clean and user-friendly interface for inventory management operations in a real-world business scenario.
 
 ---
 
 ## 👩‍💻 Author
 
-Catalina Lopes
-Software Engineering Student
+**Catalina Lopes**
