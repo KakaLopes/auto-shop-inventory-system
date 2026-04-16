@@ -8,8 +8,6 @@ const register = async (req, res) => {
   const { name, email, password } = req.body;
 
   try {
-    console.log("REGISTER BODY:", req.body);
-
     const hashedPassword = await bcrypt.hash(password, 10);
     const id = randomUUID();
 
@@ -20,7 +18,7 @@ const register = async (req, res) => {
 
     db.query(query, [id, name, email, hashedPassword, "admin"], (error, result) => {
       if (error) {
-        console.log("REGISTER DB ERROR:", error);
+      
         return res.status(500).json({
           message: "Failed to register user",
           error: error.message,
@@ -33,7 +31,7 @@ const register = async (req, res) => {
       });
     });
   } catch (err) {
-    console.log("REGISTER SERVER ERROR:", err);
+    
     return res.status(500).json({
       message: "Server error",
       error: err.message,
@@ -45,21 +43,21 @@ const register = async (req, res) => {
 const login = (req, res) => {
   const { email, password } = req.body;
 
-  console.log("LOGIN BODY:", req.body);
+ 
 
   const query = "SELECT * FROM users WHERE email = ?";
 
   db.query(query, [email], async (error, results) => {
     try {
       if (error) {
-        console.log("LOGIN DB ERROR:", error);
+        
         return res.status(500).json({
           message: "Failed to login",
           error: error.message,
         });
       }
 
-      console.log("LOGIN RESULTS:", results);
+    
 
       if (!results || results.length === 0) {
         return res.status(401).json({
@@ -68,7 +66,7 @@ const login = (req, res) => {
       }
 
       const user = results[0];
-      console.log("LOGIN USER:", user);
+     
 
       if (!password || !user.password_hash) {
         return res.status(401).json({
@@ -105,7 +103,7 @@ const login = (req, res) => {
         },
       });
     } catch (err) {
-      console.log("LOGIN SERVER ERROR:", err);
+      
       return res.status(500).json({
         message: "Internal server error",
         error: err.message,

@@ -43,7 +43,7 @@ function CreateSupplier({ onBack, onLogout }) {
           window.localStorage.getItem("token") ||
           window.sessionStorage.getItem("token");
       } catch (error) {
-        console.log("storage blocked");
+       
       }
 
       await axios.post(

@@ -19,7 +19,7 @@ function CreateStockEntry({ onBack, onLogout }) {
             window.localStorage.getItem("token") ||
             window.sessionStorage.getItem("token");
         } catch (error) {
-          console.log("storage blocked");
+          
         }
 
         const response = await axios.get(
@@ -69,7 +69,7 @@ function CreateStockEntry({ onBack, onLogout }) {
           window.localStorage.getItem("token") ||
           window.sessionStorage.getItem("token");
       } catch (error) {
-        console.log("storage blocked");
+        
       }
 
       await axios.post(
