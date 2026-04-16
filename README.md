@@ -1,124 +1,153 @@
-# 🔧 Auto Shop Inventory System - Backend
+# 🚗 Auto Shop Inventory Management System
 
-This backend is part of a full-stack inventory management system designed for auto repair shops.
+This project is a full-stack web application developed to manage inventory for auto shops and small businesses.
 
-It provides secure APIs for managing parts, suppliers, stock movements, and real-time inventory tracking.
-
----
-
-## 🚀 Features
-
-* 🔐 Authentication (JWT)
-* 👥 Protected routes
-* 📦 Parts management (CRUD)
-* 🏭 Suppliers management (CRUD)
-* 📥 Stock entry (with date support)
-* 📤 Stock exit (with validation and date support)
-* ⚠️ Low stock alerts
-* 📊 Dashboard summary
-* 📜 Movement history (entries & exits)
-* 🔄 Automatic stock updates
+It allows users to track parts, suppliers, stock entries and exits, and monitor low stock items in a simple and efficient way.
 
 ---
 
-## 🛠 Tech Stack
+## 🚀 Live Demo
 
-* Node.js
-* Express.js
-* MySQL
-* JWT Authentication
-* dotenv
+Frontend & Backend:
+👉 https://auto-shop-inventory-system.onrender.com
 
 ---
 
-## ⚙️ Installation
+## 📌 Features
 
-git clone <your-repo>
-cd backend
-npm install
-
----
-
-## 🔑 Environment Variables
-
-Create a `.env` file:
-
-PORT=5000
-DB_HOST=localhost
-DB_USER=root
-DB_PASSWORD=
-DB_NAME=auto_shop
-JWT_SECRET=your_secret_key
+- 🔐 User Authentication (Login with JWT)
+- 📊 Dashboard with real-time summary
+- 📦 Parts Management
+- 🏢 Supplier Management
+- 📥 Stock Entry (incoming products)
+- 📤 Stock Exit (outgoing products)
+- ⚠️ Low Stock Alerts
+- 📜 Movement History
+- 🔒 Route Protection (authenticated access only)
+- ✅ Form validation on all inputs
+- 🔄 Loading and error handling
 
 ---
 
-## ▶️ Run the Server
+## 🛠️ Technologies Used
 
-npm run dev
+### Frontend
+- React.js
+- Axios
+- CSS (custom styling)
 
-Server will run at:
-http://localhost:5000
+### Backend
+- Node.js
+- Express.js
+- MySQL
+
+### Deployment
+- Render (Frontend & Backend)
+- Aiven (MySQL Database)
+
+---
+
+## 🧱 Project Structure
+
+```
+frontend/
+  ├── components/
+  ├── utils/
+  └── pages/
+
+backend/
+  ├── controllers/
+  ├── routes/
+  ├── config/
+  └── server.js
+```
 
 ---
 
 ## 🔐 Authentication
 
-Login returns a token:
-
-{
-"token": "your_jwt_token"
-}
-
-Use it in requests:
-
-Authorization: Bearer your_token
+- JWT-based authentication
+- Token stored in browser storage
+- Protected routes
+- Auto logout on invalid/expired token
 
 ---
 
-## 📡 Main Endpoints
+## ⚙️ How to Run Locally
 
-Auth
-POST /api/auth/login
-POST /api/auth/register
+### 1. Clone the repository
 
-Parts
-GET /api/parts
-POST /api/parts
+```bash
+git clone https://github.com/KakaLopes/auto-shop-inventory-system.git
+```
 
-Suppliers
-GET /api/suppliers
-POST /api/suppliers
+### 2. Install dependencies
 
-Stock
-POST /api/stock-entries
-POST /api/stock-exits
+```bash
+cd backend
+npm install
 
-Alerts
-GET /api/alerts/low-stock
+cd ../frontend
+npm install
+```
 
-Dashboard
-GET /api/dashboard/summary
+### 3. Configure environment variables
+
+Create a `.env` file in backend:
+
+```
+DB_HOST=
+DB_PORT=
+DB_USER=
+DB_PASSWORD=
+DB_NAME=
+JWT_SECRET=
+```
+
+### 4. Run the project
+
+Backend:
+```bash
+npm start
+```
+
+Frontend:
+```bash
+npm run dev
+```
 
 ---
 
-## 🧠 Business Logic
+## 📱 Responsiveness
 
-* Stock entries increase quantity
-* Stock exits decrease quantity
-* Prevents negative stock
-* Supports manual or automatic timestamps
+The system is responsive and works on:
+- Desktop 💻
+- Tablet 📱
+- Mobile 📱
 
 ---
 
-## 📌 Status
+## 🎓 Project Purpose
 
-✔️ Fully functional
-✔️ Ready for production improvements
-✔️ Built for academic project (TCC)
+This project was developed as part of a Software Engineering course to demonstrate:
+
+- Full-stack development
+- API integration
+- Authentication and security
+- Database management
+- Real-world business logic
 
 ---
 
 ## 👩‍💻 Author
 
-Catalina Lopes
-Software Engineering Student
+**Catalina Lopes**
+
+---
+
+## 📌 Future Improvements
+
+- User registration screen
+- Role-based access (Admin/User)
+- Export reports (PDF / Excel)
+- Advanced filters and analytics
