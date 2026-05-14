@@ -40,6 +40,11 @@ function CreateStockEntry({ onBack, onLogout }) {
     fetchParts();
   }, []);
 
+  const formatDateForMySQL = (dateValue) => {
+  if (!dateValue) return null;
+  return dateValue.replace("T", " ") + ":00";
+};
+
   const handleCreateStockEntry = async () => {
     if (!partId) {
       setMessage("Please select a part ❌");
@@ -77,7 +82,7 @@ function CreateStockEntry({ onBack, onLogout }) {
         {
           part_id: Number(partId),
           quantity: Number(quantity),
-          entry_date: new Date(entryDate).toISOString(),
+          entry_date: formatDateForMySQL(entryDate),
           notes,
         },
         {
